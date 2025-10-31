@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Custom Application Settings
+    |--------------------------------------------------------------------------
+    */
+
+    'admin_pin' => env('ADMIN_PIN', '1234'),
+    'notify_enabled' => env('NOTIFY_ENABLED', false),
+    'clinic_name' => env('CLINIC_NAME', '平泉どうぶつ病院'),
+    'clinic_tel' => env('CLINIC_TEL', '0191-00-0000'),
+
 ];
