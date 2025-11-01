@@ -12,20 +12,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // 既存のパスワードを電話番号の下4桁に更新
-        $patients = DB::table('patients')->get();
-        foreach ($patients as $patient) {
-            $phone = preg_replace('/[^0-9]/', '', $patient->phone);
-            $newPassword = substr($phone, -4);
-            DB::table('patients')
-                ->where('id', $patient->id)
-                ->update(['password' => $newPassword]);
-        }
+        // 既存のパスワードを電話番号の下4桁に更新（データがある場合のみ）
+        if (Schema::hasTable('patients') && Schema::hasColumn('patients', 'birth')) {
+            $patients = DB::table('patients')->get();
+            foreach ($patients as $patient) {
+                $phone = preg_replace('/[^0-9]/', '', $patient->phone ?? '');
+                $newPassword = substr($phone, -4) ?: '0000';
+                DB::table('patients')
+                    ->where('id', $patient->id)
+                    ->update(['password' => $newPassword]);
+            }
 
-        // birth カラムを削除
-        Schema::table('patients', function (Blueprint $table) {
-            $table->dropColumn('birth');
-        });
+            // birth カラムを削除
+            Schema::table('patients', function (Blueprint $table) {
+                $table->dropColumn('birth');
+            });
+        }
     }
 
     /**
