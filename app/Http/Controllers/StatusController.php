@@ -15,7 +15,7 @@ class StatusController extends Controller
         $queue = Ticket::whereDate('visit_date', $today)
             ->where('done', false)
             ->orderBy('seq_no')
-            ->get(['id', 'seq_no']);
+            ->get(['id', 'seq_no', 'notified']);
 
         $nowServing = Ticket::whereDate('visit_date', $today)
             ->where('done', true)
@@ -30,6 +30,7 @@ class StatusController extends Controller
             'queue' => $queue->map(fn($ticket) => [
                 'id' => $ticket->id,
                 'seq_no' => $ticket->seq_no,
+                'notified' => $ticket->notified,
             ]),
         ]);
     }

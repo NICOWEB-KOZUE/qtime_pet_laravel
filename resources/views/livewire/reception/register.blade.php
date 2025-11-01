@@ -13,16 +13,20 @@ new class extends Component {
     public string $name = '';
     public string $kana = '';
     public string $pet_name = '';
+    public string $pet_type = '';
+    public string $pet_type_other = '';
     public string $phone = '';
     public string $email = '';
     public string $visit_type = '';
     public string $visit_type_other = '';
 
+    public array $petTypes = [];
     public array $visitTypes = [];
 
     public function mount(ClinicScheduleService $scheduleService): void
     {
         $this->clinicToday = $scheduleService->clinicContext();
+        $this->petTypes = Patient::getPetTypes();
         $this->visitTypes = Ticket::getVisitTypes();
     }
 
@@ -32,9 +36,11 @@ new class extends Component {
             'name' => ['required', 'string', 'max:255'],
             'kana' => ['nullable', 'string', 'max:255'],
             'pet_name' => ['required', 'string', 'max:255'],
+            'pet_type' => ['nullable', 'in:' . implode(',', array_keys($this->petTypes))],
+            'pet_type_other' => ['required_if:pet_type,other', 'nullable', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'visit_type' => ['nullable', 'in:' . implode(',', $this->visitTypes)],
+            'visit_type' => ['nullable', 'in:' . implode(',', array_keys($this->visitTypes))],
             'visit_type_other' => ['required_if:visit_type,' . Ticket::VISIT_TYPE_OTHER, 'nullable', 'string', 'max:255'],
         ];
     }
@@ -42,6 +48,7 @@ new class extends Component {
     public function messages(): array
     {
         return [
+            'pet_type_other.required_if' => '「その他」を選択した場合は詳細を入力してください。',
             'visit_type_other.required_if' => '「その他」を選択した場合は詳細を入力してください。',
         ];
     }
@@ -60,6 +67,8 @@ new class extends Component {
             'name' => $this->name,
             'kana' => $this->kana,
             'pet_name' => $this->pet_name,
+            'pet_type' => $this->pet_type ?: null,
+            'pet_type_other' => $this->pet_type_other ?: null,
             'phone' => $this->phone,
             'email' => $this->email ?: null,
             'card_number' => $this->generateCardNumber(),
@@ -137,6 +146,32 @@ new class extends Component {
                         <p class="clinic-error">{{ $message }}</p>
                     @enderror
                 </div>
+
+                <div class="clinic-field">
+                    <label class="clinic-label" for="pet_type">ペットの種類</label>
+                    <select id="pet_type" class="clinic-select" wire:model.live="pet_type">
+                        <option value="">選択してください</option>
+                        @foreach ($petTypes as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <p class="clinic-hint">該当する種類があれば選択してください（任意）。</p>
+                    @error('pet_type')
+                        <p class="clinic-error">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                @if ($pet_type === 'other')
+                    <div class="clinic-field">
+                        <label class="clinic-label" for="pet_type_other">ペットの種類の詳細 <span
+                                class="text-red-500">*</span></label>
+                        <input id="pet_type_other" type="text" class="clinic-input" wire:model.defer="pet_type_other"
+                            placeholder="例）フェレット">
+                        @error('pet_type_other')
+                            <p class="clinic-error">{{ $message }}</p>
+                        @enderror
+                    </div>
+                @endif
 
                 <div class="clinic-field">
                     <label class="clinic-label" for="phone">電話番号 <span class="text-red-500">*</span></label>

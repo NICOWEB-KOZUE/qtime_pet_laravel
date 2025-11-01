@@ -27,7 +27,7 @@ new class extends Component {
         return [
             'card' => ['required', 'string', 'max:255'],
             'pwd' => ['required', 'string', 'max:255'],
-            'visit_type' => ['nullable', 'in:' . implode(',', $this->visitTypes)],
+            'visit_type' => ['nullable', 'in:' . implode(',', array_keys($this->visitTypes))],
             'visit_type_other' => ['required_if:visit_type,' . Ticket::VISIT_TYPE_OTHER, 'nullable', 'string', 'max:255'],
         ];
     }
@@ -49,10 +49,19 @@ new class extends Component {
             return;
         }
 
+        // 既存チケットがあるかチェック
+        $today = \Carbon\Carbon::today();
+        $existingTicket = \App\Models\Ticket::where('patient_id', $patient->id)->whereDate('visit_date', $today)->where('done', false)->first();
+
         $ticket = $ticketService->findOrCreateTodayTicket($patient, [
             'visit_type' => $this->visit_type ?: null,
             'visit_type_other' => $this->visit_type_other ?: null,
         ]);
+
+        // 既存チケットがあった場合はフラッシュメッセージをセット
+        if ($existingTicket) {
+            session()->flash('already_registered', true);
+        }
 
         return redirect()->route('done', ['ticket' => $ticket->id]);
     }

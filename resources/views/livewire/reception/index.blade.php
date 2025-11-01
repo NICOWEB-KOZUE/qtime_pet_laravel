@@ -14,17 +14,17 @@ new class extends Component {
 
 ?>
 
-<div class="max-w-5xl mx-auto px-4 py-8 space-y-8">
+<div class="max-w-5xl mx-auto px-3 py-0 space-y-5">
     <div class="space-y-2">
-        <h1 class="text-3xl font-bold text-gray-900">平泉どうぶつ病院 受付</h1>
-        <p class="text-base text-gray-600">当日の順番受付と診察状況を確認できます。</p>
+        <h1 class="text-4xl font-bold text-gray-900">本日の受付</h1>
+        <p class="text-lg text-gray-600">当日の順番受付と診察状況を確認できます。</p>
     </div>
 
     <div class="grid gap-6 md:grid-cols-2">
-        <div class="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+        <div class="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
             <div class="space-y-2">
-                <h2 class="text-xl font-semibold text-gray-900">受付する</h2>
-                <p class="text-sm text-gray-600 leading-relaxed">
+                <h2 class="text-2xl font-semibold text-gray-900">受付する</h2>
+                <p class="text-base text-gray-600 leading-relaxed">
                     初めての方は「初回登録」、<br />
                     診察券をお持ちの方は「再診ログイン」へお進みください。
                 </p>
@@ -32,25 +32,25 @@ new class extends Component {
 
             <div class="grid gap-3">
                 <a href="{{ route('register') }}"
-                    class="flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-center text-base font-semibold text-white shadow-sm transition hover:bg-blue-700">
+                    class="flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-center text-lg font-semibold text-white shadow-sm transition hover:bg-blue-700">
                     📝 初回登録（はじめての方）
                 </a>
                 <a href="{{ route('patient.login') }}"
-                    class="flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-center text-base font-semibold text-blue-700 transition hover:bg-blue-100">
+                    class="flex items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-center text-lg font-semibold text-blue-700 transition hover:bg-blue-100">
                     🔑 再診ログイン（診察券あり）
                 </a>
             </div>
 
-            <div class="rounded-xl bg-blue-50 p-4 text-sm text-blue-900">
-                <h3 class="text-sm font-semibold text-blue-700">診療時間</h3>
+            <div class="rounded-xl bg-blue-50 p-4 text-base text-blue-900">
+                <h3 class="text-base font-semibold text-blue-700">診療時間</h3>
                 <div class="mt-3 space-y-2">
                     <div>
                         <span class="font-semibold text-gray-800">午前診療</span> 9:00〜12:00<br>
-                        <span class="text-gray-500">WEB受付 7:00〜11:00</span>
+                        <span class="text-sm text-gray-500">WEB受付 7:00〜11:00</span>
                     </div>
                     <div>
                         <span class="font-semibold text-gray-800">午後診療</span> 15:00〜19:00<br>
-                        <span class="text-gray-500">WEB受付 13:00〜18:00</span>
+                        <span class="text-sm text-gray-500">WEB受付 13:00〜18:00</span>
                     </div>
                 </div>
             </div>
@@ -79,25 +79,25 @@ new class extends Component {
                 </div>
 
                 <div id="nextSection" class="bg-blue-50 text-blue-700 rounded-xl p-5 space-y-2">
-                    <div class="text-sm uppercase tracking-wide opacity-80">次の方</div>
-                    <div class="text-4xl font-bold" id="next">-</div>
-                    <div class="text-xs opacity-80">待合中の先頭番号</div>
+                    <div class="text-base uppercase tracking-wide opacity-80">次の方</div>
+                    <div class="text-5xl font-bold" id="next">-</div>
+                    <div class="text-sm opacity-80">待合中の先頭番号</div>
                 </div>
             </div>
 
             <div>
-                <div class="flex items-center gap-2 text-sm font-semibold text-gray-800">
+                <div class="flex items-center gap-2 text-base font-semibold text-gray-800">
                     待ち状況
                     <span
-                        class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600"
+                        class="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-sm font-medium text-gray-600"
                         id="queueCount">- 人待ち</span>
                 </div>
-                <ul class="mt-3 space-y-1 text-sm text-gray-700" id="queueList"></ul>
+                <ul class="mt-3 space-y-1 text-base text-gray-700" id="queueList"></ul>
             </div>
 
             <div class="flex items-center justify-between">
                 <button id="refreshBtn"
-                    class="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-sm font-medium text-blue-700 transition hover:bg-blue-100">
+                    class="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2 text-base font-medium text-blue-700 transition hover:bg-blue-100">
                     <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                         stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -111,49 +111,49 @@ new class extends Component {
     </div>
 </div>
 
-@push('scripts')
-    <script>
-        async function loadStatus() {
-            const nowElem = document.getElementById('now');
-            const nextElem = document.getElementById('next');
-            const queueList = document.getElementById('queueList');
-            const queueCount = document.getElementById('queueCount');
-            const ts = document.getElementById('timestamp');
+<script>
+    async function loadStatus() {
+        const nowElem = document.getElementById('now');
+        const nextElem = document.getElementById('next');
+        const queueList = document.getElementById('queueList');
+        const queueCount = document.getElementById('queueCount');
+        const ts = document.getElementById('timestamp');
 
-            try {
-                const response = await fetch('{{ route('status.json') }}', {
-                    cache: 'no-store'
-                });
-                if (!response.ok) {
-                    throw new Error('status API failed');
-                }
-
-                const data = await response.json();
-
-                const nowServing = data.now_serving ? (data.now_serving.seq_no ?? data.now_serving.id) : '-';
-                const nextServing = data.queue?.[0] ? (data.queue[0].seq_no ?? data.queue[0].id) : '-';
-
-                nowElem.textContent = nowServing;
-                nextElem.textContent = nextServing;
-
-                queueList.innerHTML = '';
-                (data.queue || []).slice(0, 6).forEach((item, index) => {
-                    const li = document.createElement('li');
-                    const number = item.seq_no ?? item.id;
-                    li.textContent = index === 0 ? `#${number}（次）` : `#${number}`;
-                    queueList.appendChild(li);
-                });
-
-                queueCount.textContent = `${data.queue?.length ?? 0} 人待ち`;
-                ts.textContent = `最終更新 ${new Date().toLocaleTimeString()}`;
-            } catch (error) {
-                console.error(error);
-                ts.textContent = `通信エラー ${new Date().toLocaleTimeString()}`;
+        try {
+            const response = await fetch('{{ route('status.json') }}', {
+                cache: 'no-store'
+            });
+            if (!response.ok) {
+                throw new Error('status API failed');
             }
-        }
 
+            const data = await response.json();
+
+            const nowServing = data.now_serving ? (data.now_serving.seq_no ?? data.now_serving.id) : '-';
+            const nextServing = data.queue?.[0] ? (data.queue[0].seq_no ?? data.queue[0].id) : '-';
+
+            nowElem.textContent = nowServing;
+            nextElem.textContent = nextServing;
+
+            queueList.innerHTML = '';
+            (data.queue || []).slice(0, 6).forEach((item, index) => {
+                const li = document.createElement('li');
+                const number = item.seq_no ?? item.id;
+                li.textContent = index === 0 ? `#${number}（次）` : `#${number}`;
+                queueList.appendChild(li);
+            });
+
+            queueCount.textContent = `${data.queue?.length ?? 0} 人待ち`;
+            ts.textContent = `最終更新 ${new Date().toLocaleTimeString()}`;
+        } catch (error) {
+            console.error(error);
+            ts.textContent = `通信エラー ${new Date().toLocaleTimeString()}`;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('refreshBtn')?.addEventListener('click', loadStatus);
         setInterval(loadStatus, 5000);
         loadStatus();
-    </script>
-@endpush
+    });
+</script>

@@ -12,17 +12,11 @@
                 <a href="{{ route('home') }}" class="clinic-brand">
                     <x-app-logo />
                 </a>
+            </div>
 
-                <nav class="clinic-nav">
-                    <a href="{{ route('home') }}"
-                        class="clinic-nav__link {{ request()->routeIs('home') ? 'is-active' : '' }}">ホーム</a>
-                    <a href="{{ route('register') }}"
-                        class="clinic-nav__link {{ request()->routeIs('register') ? 'is-active' : '' }}">初回登録</a>
-                    <a href="{{ route('patient.login') }}"
-                        class="clinic-nav__link {{ request()->routeIs('patient.login') ? 'is-active' : '' }}">再診ログイン</a>
-                    <a href="{{ route('display') }}"
-                        class="clinic-nav__link {{ request()->routeIs('display') ? 'is-active' : '' }}">待合モニター</a>
-                </nav>
+            <!-- 歩く猫のアニメーション -->
+            <div class="walking-cat-container">
+                <img src="{{ asset('images/nekowalk.gif') }}" alt="歩く猫" class="walking-cat-gif">
             </div>
         </header>
 
