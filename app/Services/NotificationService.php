@@ -45,23 +45,19 @@ class NotificationService
             return;
         }
 
-        // 患者情報がない、またはメールアドレスがない場合はスキップ
-        if (! $target->patient || ! $target->patient->email) {
-            Log::info("[EMAIL SKIP] No email for ticket_id={$target->id}");
-            return;
+        // メールアドレスがある場合はメール送信
+        if ($target->patient && $target->patient->email) {
+            try {
+                Mail::to($target->patient->email)->send(new TwoAheadNotification($target));
+                Log::info("[EMAIL SENT] to={$target->patient->email} ticket_id={$target->id}");
+            } catch (\Exception $e) {
+                Log::error("[EMAIL ERROR] to={$target->patient->email} error={$e->getMessage()}");
+            }
+        } else {
+            Log::info("[EMAIL SKIP] No email for ticket_id={$target->id}, but marking as notified");
         }
 
-        // メール送信
-        try {
-            Mail::to($target->patient->email)->send(new TwoAheadNotification($target));
-            
-            Log::info("[EMAIL SENT] to={$target->patient->email} ticket_id={$target->id}");
-            
-            // 通知済みフラグを立てる
-            $target->update(['notified' => true]);
-        } catch (\Exception $e) {
-            // 送信失敗時はフラグを立てない（次回リトライ可能にする）
-            Log::error("[EMAIL ERROR] to={$target->patient->email} error={$e->getMessage()}");
-        }
+        // メールアドレスの有無に関わらず、通知済みフラグを立てる
+        $target->update(['notified' => true]);
     }
 }
