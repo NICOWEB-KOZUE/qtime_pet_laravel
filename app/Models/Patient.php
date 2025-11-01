@@ -15,14 +15,9 @@ class Patient extends Model
         'kana',
         'pet_name',
         'phone',
-        'birth',
         'email',
         'card_number',
         'password',
-    ];
-
-    protected $casts = [
-        'birth' => 'date',
     ];
 
     /**

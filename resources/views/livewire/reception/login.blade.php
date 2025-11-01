@@ -90,7 +90,7 @@ new class extends Component {
                 <div class="clinic-field">
                     <label class="clinic-label" for="pwd">パスワード <span class="text-red-500">*</span></label>
                     <input id="pwd" type="password" class="clinic-input" wire:model.defer="pwd"
-                        placeholder="生年月日の下4桁">
+                        placeholder="電話番号の下4桁">
                     @error('pwd')
                         <p class="clinic-error">{{ $message }}</p>
                     @enderror
@@ -134,7 +134,7 @@ new class extends Component {
         </form>
 
         <div class="clinic-login__note">
-            パスワードは「生年月日の下4桁」です。忘れた方は受付までご連絡ください。
+            パスワードは「電話番号の下4桁」です。忘れた方は受付までご連絡ください。
         </div>
     </div>
 </div>
