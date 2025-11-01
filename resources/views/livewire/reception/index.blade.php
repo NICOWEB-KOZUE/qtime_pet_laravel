@@ -14,14 +14,14 @@ new class extends Component {
 
 ?>
 
-<div class="max-w-5xl mx-auto px-3 py-0 space-y-5">
+<div class="max-w-5xl mx-auto px-0 sm:px-3 py-0 space-y-3 sm:space-y-5">
     <div class="space-y-2">
         <h1 class="text-4xl font-bold text-gray-900">本日の受付</h1>
         <p class="text-lg text-gray-600">当日の順番受付と診察状況を確認できます。</p>
     </div>
 
-    <div class="grid gap-6 md:grid-cols-2">
-        <div class="space-y-4 rounded-2xl border border-zinc-200 bg-white p-5 shadow-sm">
+    <div class="grid gap-2 sm:gap-6 md:grid-cols-2">
+        <div class="space-y-4 rounded-2xl border border-zinc-200 bg-white p-2 sm:p-5 shadow-sm">
             <div class="space-y-2">
                 <h2 class="text-2xl font-semibold text-gray-900">受付する</h2>
                 <p class="text-base text-gray-600 leading-relaxed">
@@ -56,7 +56,7 @@ new class extends Component {
             </div>
         </div>
 
-        <div class="space-y-5 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm" id="status-card">
+        <div class="space-y-5 rounded-2xl border border-zinc-200 bg-white p-2 sm:p-6 shadow-sm" id="status-card">
             <div class="flex items-center justify-between">
                 <h2 class="text-xl font-semibold text-gray-900">本日の診察状況</h2>
                 <span
@@ -72,13 +72,13 @@ new class extends Component {
             @endif
 
             <div class="grid gap-4 md:grid-cols-2">
-                <div id="nowSection" class="bg-blue-600 text-white rounded-xl p-5 space-y-2">
+                <div id="nowSection" class="bg-blue-600 text-white rounded-xl p-2 sm:p-5 space-y-2">
                     <div class="text-sm uppercase tracking-wide opacity-80">ただいま診察中</div>
                     <div class="text-4xl font-bold" id="now">-</div>
                     <div class="text-xs opacity-80">最新の診察番号</div>
                 </div>
 
-                <div id="nextSection" class="bg-blue-50 text-blue-700 rounded-xl p-5 space-y-2">
+                <div id="nextSection" class="bg-blue-50 text-blue-700 rounded-xl p-2 sm:p-5 space-y-2">
                     <div class="text-base uppercase tracking-wide opacity-80">次の方</div>
                     <div class="text-5xl font-bold" id="next">-</div>
                     <div class="text-sm opacity-80">待合中の先頭番号</div>

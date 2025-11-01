@@ -393,3 +393,138 @@ select:focus[data-flux-control] {
         @apply mt-6 flex flex-wrap gap-3;
     }
 }
+
+/* ===== レスポンシブ最適化（本日の受付画面） ===== */
+@media (max-width: 640px) {
+
+    /* p-6とp-5のpadding上書き */
+    .p-6 {
+        padding: calc(var(--spacing) * 1) !important;
+    }
+
+    .p-5 {
+        padding: calc(var(--spacing) * 1) !important;
+    }
+
+    /* ヘッダー調整 */
+    .clinic-header__inner {
+        @apply px-4 py-4 justify-center;
+    }
+
+    .clinic-brand {
+        @apply justify-center;
+    }
+
+    /* 歩く猫のサイズ調整 */
+    .walking-cat-gif {
+        height: 50px;
+    }
+
+    /* 本日の受付画面のコンテナ */
+    .max-w-5xl {
+        @apply px-0 py-3;
+    }
+
+    /* カード間の余白も調整 */
+    .grid.gap-6.md\\:grid-cols-2 {
+        @apply grid-cols-1 gap-0;
+    }
+
+    /* タイトルセクション */
+    .space-y-2 h1 {
+        @apply text-2xl;
+    }
+
+    .space-y-2 p {
+        @apply text-base;
+    }
+
+    /* 受付するカード */
+    .space-y-4 h2 {
+        @apply text-xl;
+    }
+
+    .space-y-4 p {
+        @apply text-sm;
+    }
+
+    /* ボタンのサイズ調整 */
+    .rounded-xl.bg-blue-600,
+    .rounded-xl.border.bg-blue-50 {
+        @apply px-3 py-2.5 text-base;
+    }
+
+    /* 診療時間カード */
+    .rounded-xl.bg-blue-50 {
+        @apply p-3 text-sm;
+    }
+
+    .rounded-xl.bg-blue-50 h3 {
+        @apply text-sm;
+    }
+
+    .rounded-xl.bg-blue-50 .space-y-2 {
+        @apply mt-2 space-y-1.5 text-sm;
+    }
+
+    /* 本日の診察状況カード */
+    #status-card h2 {
+        @apply text-lg;
+    }
+
+    #status-card .text-xs {
+        @apply text-[10px];
+    }
+
+    /* 診察中・次の方のカード */
+    #nowSection .text-sm {
+        @apply text-xs;
+    }
+
+    #nowSection .text-4xl {
+        @apply text-3xl;
+    }
+
+    #nowSection .text-xs {
+        @apply text-[10px];
+    }
+
+    #nextSection .text-base {
+        @apply text-sm;
+    }
+
+    #nextSection .text-5xl {
+        @apply text-4xl;
+    }
+
+    #nextSection .text-sm {
+        @apply text-xs;
+    }
+
+    /* 待ち状況 */
+    #status-card .flex.items-center.gap-2 {
+        @apply text-sm;
+    }
+
+    #queueList {
+        @apply text-sm;
+    }
+
+    /* 更新ボタン */
+    #refreshBtn {
+        @apply px-3 py-1.5 text-sm;
+    }
+
+    #timestamp {
+        @apply text-[10px];
+    }
+
+    /* グリッドを1カラムに */
+    .grid.gap-6.md\\:grid-cols-2 {
+        @apply grid-cols-1 gap-4;
+    }
+
+    .grid.gap-4.md\\:grid-cols-2 {
+        @apply grid-cols-1 gap-3;
+    }
+}
