@@ -14,16 +14,12 @@ new class extends Component {
     public string $visit_type = '';
     public string $visit_type_other = '';
 
-    public array $visitTypes = [
-        Ticket::VISIT_TYPE_REVISIT,
-        Ticket::VISIT_TYPE_VACCINE,
-        Ticket::VISIT_TYPE_NAIL,
-        Ticket::VISIT_TYPE_OTHER,
-    ];
+    public array $visitTypes = [];
 
     public function mount(ClinicScheduleService $scheduleService): void
     {
         $this->clinicToday = $scheduleService->clinicContext();
+        $this->visitTypes = Ticket::getVisitTypes();
     }
 
     public function rules(): array
@@ -46,11 +42,9 @@ new class extends Component {
             return;
         }
 
-        $patient = Patient::where('card_number', $this->card)
-            ->where('password', $this->pwd)
-            ->first();
+        $patient = Patient::where('card_number', $this->card)->where('password', $this->pwd)->first();
 
-        if (! $patient) {
+        if (!$patient) {
             $this->addError('form', '診察券番号またはパスワードが違います。');
             return;
         }
@@ -86,33 +80,45 @@ new class extends Component {
             <div class="clinic-form__grid">
                 <div class="clinic-field">
                     <label class="clinic-label" for="card">診察券番号 <span class="text-red-500">*</span></label>
-                    <input id="card" type="text" class="clinic-input" wire:model.defer="card" placeholder="例）C012345">
-                    @error('card') <p class="clinic-error">{{ $message }}</p> @enderror
+                    <input id="card" type="text" class="clinic-input" wire:model.defer="card"
+                        placeholder="例）C012345">
+                    @error('card')
+                        <p class="clinic-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="clinic-field">
                     <label class="clinic-label" for="pwd">パスワード <span class="text-red-500">*</span></label>
-                    <input id="pwd" type="password" class="clinic-input" wire:model.defer="pwd" placeholder="生年月日の下4桁">
-                    @error('pwd') <p class="clinic-error">{{ $message }}</p> @enderror
+                    <input id="pwd" type="password" class="clinic-input" wire:model.defer="pwd"
+                        placeholder="生年月日の下4桁">
+                    @error('pwd')
+                        <p class="clinic-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 <div class="clinic-field">
                     <label class="clinic-label" for="visit_type">診察内容</label>
                     <select id="visit_type" class="clinic-select" wire:model.live="visit_type">
                         <option value="">選択してください</option>
-                        @foreach ($visitTypes as $option)
-                            <option value="{{ $option }}">{{ $option }}</option>
+                        @foreach ($visitTypes as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
                         @endforeach
                     </select>
                     <p class="clinic-hint">該当する内容があれば選択してください（任意）。</p>
-                    @error('visit_type') <p class="clinic-error">{{ $message }}</p> @enderror
+                    @error('visit_type')
+                        <p class="clinic-error">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 @if ($visit_type === Ticket::VISIT_TYPE_OTHER)
                     <div class="clinic-field">
-                        <label class="clinic-label" for="visit_type_other">診察内容の詳細 <span class="text-red-500">*</span></label>
-                        <input id="visit_type_other" type="text" class="clinic-input" wire:model.defer="visit_type_other" placeholder="例）耳のかゆみ">
-                        @error('visit_type_other') <p class="clinic-error">{{ $message }}</p> @enderror
+                        <label class="clinic-label" for="visit_type_other">診察内容の詳細 <span
+                                class="text-red-500">*</span></label>
+                        <input id="visit_type_other" type="text" class="clinic-input"
+                            wire:model.defer="visit_type_other" placeholder="例）耳のかゆみ">
+                        @error('visit_type_other')
+                            <p class="clinic-error">{{ $message }}</p>
+                        @enderror
                     </div>
                 @endif
             </div>

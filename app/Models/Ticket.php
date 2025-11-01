@@ -13,10 +13,32 @@ class Ticket extends Model
     public const SESSION_AM = 'AM';
     public const SESSION_PM = 'PM';
 
+    // 診察内容の定数
+    public const VISIT_TYPE_FIRST = '初診';
     public const VISIT_TYPE_REVISIT = '再診';
-    public const VISIT_TYPE_VACCINE = 'ワクチン';
-    public const VISIT_TYPE_NAIL = '爪切り';
+    public const VISIT_TYPE_VACCINE = 'ワクチン・予防接種';
+    public const VISIT_TYPE_CHECKUP = '健康診断';
+    public const VISIT_TYPE_GROOMING = '爪切り・耳掃除など';
+    public const VISIT_TYPE_SURGERY = '手術・処置';
+    public const VISIT_TYPE_EMERGENCY = '急患';
     public const VISIT_TYPE_OTHER = 'その他';
+
+    /**
+     * 診察内容の選択肢を取得
+     */
+    public static function getVisitTypes(): array
+    {
+        return [
+            self::VISIT_TYPE_FIRST => '初診（はじめての来院）',
+            self::VISIT_TYPE_REVISIT => '再診（経過観察・継続治療）',
+            self::VISIT_TYPE_VACCINE => 'ワクチン・予防接種',
+            self::VISIT_TYPE_CHECKUP => '健康診断',
+            self::VISIT_TYPE_GROOMING => '爪切り・耳掃除など',
+            self::VISIT_TYPE_SURGERY => '手術・処置',
+            self::VISIT_TYPE_EMERGENCY => '急患（緊急対応）',
+            self::VISIT_TYPE_OTHER => 'その他',
+        ];
+    }
 
     protected $fillable = [
         'patient_id',
