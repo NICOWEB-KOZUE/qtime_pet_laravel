@@ -14,7 +14,6 @@ new class extends Component {
     public string $kana = '';
     public string $pet_name = '';
     public string $phone = '';
-    public string $birth = '';
     public string $email = '';
     public string $visit_type = '';
     public string $visit_type_other = '';
@@ -34,7 +33,6 @@ new class extends Component {
             'kana' => ['nullable', 'string', 'max:255'],
             'pet_name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:20'],
-            'birth' => ['required', 'date', 'before_or_equal:today'],
             'email' => ['nullable', 'email', 'max:255'],
             'visit_type' => ['nullable', 'in:' . implode(',', $this->visitTypes)],
             'visit_type_other' => ['required_if:visit_type,' . Ticket::VISIT_TYPE_OTHER, 'nullable', 'string', 'max:255'],
@@ -45,7 +43,6 @@ new class extends Component {
     {
         return [
             'visit_type_other.required_if' => '「その他」を選択した場合は詳細を入力してください。',
-            'birth.before_or_equal' => '生年月日は本日以前の日付を選択してください。',
         ];
     }
 
@@ -59,17 +56,14 @@ new class extends Component {
             return;
         }
 
-        $birthDate = Carbon::parse($this->birth);
-
         $patient = Patient::create([
             'name' => $this->name,
             'kana' => $this->kana,
             'pet_name' => $this->pet_name,
             'phone' => $this->phone,
-            'birth' => $birthDate->toDateString(),
             'email' => $this->email ?: null,
             'card_number' => $this->generateCardNumber(),
-            'password' => $this->passwordFromBirth($birthDate),
+            'password' => $this->passwordFromPhone($this->phone),
         ]);
 
         $ticket = $ticketService->findOrCreateTodayTicket($patient, [
@@ -89,9 +83,11 @@ new class extends Component {
         return $number;
     }
 
-    private function passwordFromBirth(Carbon $birth): string
+    private function passwordFromPhone(string $phone): string
     {
-        return $birth->format('md');
+        // 電話番号から数字のみを抽出して下4桁を取得
+        $digits = preg_replace('/[^0-9]/', '', $phone);
+        return substr($digits, -4);
     }
 };
 ?>
@@ -146,16 +142,8 @@ new class extends Component {
                     <label class="clinic-label" for="phone">電話番号 <span class="text-red-500">*</span></label>
                     <input id="phone" type="tel" class="clinic-input" wire:model.defer="phone"
                         placeholder="090-1234-5678">
+                    <p class="clinic-hint">パスワードとして電話番号の下4桁を利用します。</p>
                     @error('phone')
-                        <p class="clinic-error">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="clinic-field">
-                    <label class="clinic-label" for="birth">生年月日 <span class="text-red-500">*</span></label>
-                    <input id="birth" type="date" class="clinic-input" wire:model.defer="birth">
-                    <p class="clinic-hint">パスワードとして生年月日の下4桁を利用します。</p>
-                    @error('birth')
                         <p class="clinic-error">{{ $message }}</p>
                     @enderror
                 </div>
